@@ -11,7 +11,7 @@ The Testcontainers module for Google Cloud Storage, based on [fake-gcs-server](h
 Please run the following command to add the Google Cloud Storage module to your python dependencies:
 
 ```bash
-pip install testcontainers[gcs]
+pip install testcontainers[gcs] google-cloud-storage
 ```
 
 ## Usage example

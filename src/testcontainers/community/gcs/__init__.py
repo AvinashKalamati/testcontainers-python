@@ -11,14 +11,16 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 import json
+from typing import TYPE_CHECKING
 from urllib.request import Request, urlopen
 
-from google.auth.credentials import AnonymousCredentials
-from google.cloud import storage
 from typing_extensions import Self
 
 from testcontainers.core.container import DockerContainer
 from testcontainers.core.wait_strategies import HttpWaitStrategy
+
+if TYPE_CHECKING:
+    from google.cloud import storage
 
 __all__ = ["GcsContainer"]
 
@@ -76,8 +78,14 @@ class GcsContainer(DockerContainer):
         with urlopen(request, timeout=10):
             pass
 
-    def get_client(self, **kwargs: object) -> storage.Client:
-        """Get a ``google.cloud.storage.Client`` connected to the emulator."""
+    def get_client(self, **kwargs: object) -> "storage.Client":
+        """Get a ``google.cloud.storage.Client`` connected to the emulator.
+
+        Requires the ``google-cloud-storage`` package to be installed.
+        """
+        from google.auth.credentials import AnonymousCredentials
+        from google.cloud import storage
+
         return storage.Client(
             project=self.project,
             credentials=AnonymousCredentials(),
